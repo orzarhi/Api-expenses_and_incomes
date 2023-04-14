@@ -16,8 +16,8 @@ mongoose.set("strictQuery", true);
 const app = express();
 
 app.use(express.json());
-// app.use(cors({ credentials: true, origin: URL }));
-app.use(cors({ origin: "*", allowedHeaders: ["token", "Content-type"] }));
+app.use(cors({ credentials: true, origin: URL }));
+// app.use(cors({ origin: "*", allowedHeaders: ["token", "Content-type"] }));
 // app.use(cors());
 
 // app.use(cors());
