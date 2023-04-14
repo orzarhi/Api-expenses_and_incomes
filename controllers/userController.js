@@ -61,7 +61,7 @@ exports.register = async (req, res) => {
 		});
 
 		const url = `${process.env.URL_CLIENT}/user/verify-email/${user.emailToken}`;
-		sendMail(checkEmail, "ברוכים הבאים", url, "אמת את כתובת המייל");
+		sendMail(checkEmail, url, "אמת את כתובת המייל");
 
 		await user.save();
 	} catch (err) {
