@@ -37,7 +37,6 @@ exports.register = async (req, res) => {
 		const checkFullName = validation.addSlashes(fullName);
 		const checkPassword = validation.addSlashes(password);
 		const checkEmail = validation.addSlashes(email);
-		console.log("🚀 checkEmail:", checkEmail);
 
 		const userName = await User.findOne({
 			fullName: checkFullName,
