@@ -10,13 +10,14 @@ const { auth } = require("./middleware/auth");
 
 const URI = process.env.URI;
 const URL = process.env.URL;
+const URL_CLIENT = process.env.URL_CLIENT;
 const PORT = process.env.PORT;
 
 mongoose.set("strictQuery", true);
 const app = express();
 
 app.use(express.json());
-app.use(cors({ credentials: true, origin: URL }));
+app.use(cors({ credentials: true, origin: [URL, URL_CLIENT] }));
 // app.use(cors({ origin: "*", allowedHeaders: ["token", "Content-type"] }));
 // app.use(cors());
 
