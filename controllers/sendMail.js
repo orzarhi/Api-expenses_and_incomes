@@ -14,7 +14,7 @@ exports.sendMail = (mailTo, url, text) => {
 		to: mailTo,
 		subject: "הוצאות😨 vs הכנסות💸",
 		html: `<div style="max-width: 700px; margin: auto; border: 10px solid #ddd; padding: 50px 20px;font-size: 110%; ">
-        <h4 style="text-align:center; text-transform: uppercase;color: teal;">.😅נא לאמת את המייל, על מנת שנוכל לגלות לאן הכסף נעלם</h4>
+        <h4 style="text-align:center; text-transform: uppercase;color: teal;">נא לאמת את המייל, על מנת שנוכל לגלות לאן הכסף נעלם.</h4>
         <a href=${url} style="background:#9d174dcc;text-decoration: none;color: white; padding: 10px 20px; margin: 10px 0;display: inline-block">${text}</a>  
 		
         </div>`,
