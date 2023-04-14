@@ -61,7 +61,7 @@ exports.register = async (req, res) => {
 			emailToken: crypto.randomBytes(64).toString("hex"),
 		});
 
-		const url = `${process.env.URL}/user/verify-email/${user.emailToken}`;
+		const url = `${process.env.URL_CLIENT}/user/verify-email/${user.emailToken}`;
 		sendMail(checkEmail, "ברוכים הבאים", url, "אמת את כתובת המייל");
 
 		await user.save();

@@ -18,26 +18,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({ credentials: true, origin: URL_CLIENT }));
-// app.use(cors({ origin: "*", allowedHeaders: ["token", "Content-type"] }));
-// app.use(cors());
-
-// app.use(cors());
-// app.get("/", (req, res) => {
-// 	res.setHeader("Access-Control-Allow-Credentials", "true");
-// 	res.send("Api is running...");
-// });
-
-// app.all("*", function (req, res, next) {
-// 	const origin = cors.origin.includes(req.header("origin").toLowerCase())
-// 		? req.headers.origin
-// 		: cors.default;
-// 	res.header("Access-Control-Allow-Origin", origin);
-// 	res.header(
-// 		"Access-Control-Allow-Headers",
-// 		"Origin, X-Requested-With, Content-Type, Accept"
-// 	);
-// 	next();
-// });
 
 mongoose
 	.connect(URI)
