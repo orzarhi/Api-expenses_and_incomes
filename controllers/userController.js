@@ -122,7 +122,7 @@ exports.login = async (req, res) => {
 
 		const userEmail = await User.findOne({ email: checkEmail });
 		if (userEmail) {
-			return res.status(400).json({ message: "משתמש לא קייםץ." });
+			return res.status(400).json({ message: "משתמש לא קיים." });
 		}
 
 		const user = await auth.login(checkEmail, checkPassword);
