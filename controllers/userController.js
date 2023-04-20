@@ -87,7 +87,12 @@ exports.verifyEmail = async (req, res) => {
 		}
 
 		const checkEmailToken = validation.addSlashes(emailToken);
+
 		let user = await User.findOne({ emailToken: checkEmailToken });
+
+		if (user.verified) {
+			return res.status(404).json({ message: "האימות כבר בוצע." });
+		}
 
 		if (!user) {
 			return res.status(404).json({ message: "לא נמצא משתמש." });
