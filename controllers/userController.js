@@ -121,7 +121,7 @@ exports.login = async (req, res) => {
 		const checkPassword = validation.addSlashes(password);
 
 		const userEmail = await User.findOne({ email: checkEmail });
-		if (userEmail) {
+		if (!userEmail) {
 			return res.status(400).json({ message: "משתמש לא קיים." });
 		}
 
