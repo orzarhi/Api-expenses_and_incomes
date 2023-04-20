@@ -120,6 +120,11 @@ exports.login = async (req, res) => {
 		const checkEmail = validation.addSlashes(email);
 		const checkPassword = validation.addSlashes(password);
 
+		const userEmail = await User.findOne({ email: checkEmail });
+		if (userEmail) {
+			return res.status(400).json({ message: "משתמש לא קייםץ." });
+		}
+
 		const user = await auth.login(checkEmail, checkPassword);
 
 		if (!user) {
