@@ -74,6 +74,11 @@ exports.getIncomesForUser = async (req, res) => {
 		if (!incomes) {
 			return res.status(404).json({ message: "הכנסה לא נמצאה." });
 		}
+
+		incomesUser.sort(
+			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+		);
+
 		return res.status(200).send(incomesUser);
 	} catch (err) {
 		return res.status(401).json({ message: err });

@@ -90,7 +90,7 @@ exports.verifyEmail = async (req, res) => {
 
 		let user = await User.findOne({ emailToken: checkEmailToken });
 
-		if (user.verified) {
+		if (user === null) {
 			return res.status(404).json({ message: "האימות כבר בוצע." });
 		}
 

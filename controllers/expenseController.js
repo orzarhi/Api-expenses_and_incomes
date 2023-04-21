@@ -111,6 +111,10 @@ exports.getExpensesForUser = async (req, res) => {
 			return res.status(404).json({ message: "ההוצאה לא נמצאה." });
 		}
 
+		expensesUser.sort(
+			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+		);
+
 		return res.status(200).send(expensesUser);
 	} catch (err) {
 		return res.status(401).json({ message: err });
