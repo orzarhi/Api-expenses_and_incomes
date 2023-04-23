@@ -9,7 +9,7 @@ const incomeRouter = require("./routers/incomeRouter");
 const { auth } = require("./middleware/auth");
 
 const URI = process.env.URI;
-const URL = process.env.URL;
+const URI_DEV = process.env.URI_DEV;
 const URL_CLIENT = process.env.URL_CLIENT;
 const PORT = process.env.PORT;
 

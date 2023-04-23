@@ -3,7 +3,7 @@ const escape = require("escape-html");
 const auth = require("../utils/auth");
 const validation = require("../utils/validation");
 const User = require("../models/User");
-const { sendMail } = require("./sendMail");
+const { sendMail } = require("../services/sendMail");
 const crypto = require("crypto");
 
 exports.register = async (req, res) => {
@@ -61,7 +61,14 @@ exports.register = async (req, res) => {
 		});
 
 		const url = `${process.env.URL_CLIENT}/user/verify-email/${user.emailToken}`;
-		sendMail(checkEmail, url, "אמת את כתובת המייל");
+		sendMail(
+			checkEmail,
+			url,
+			"register",
+			"הוצאות😨 vs הכנסות💸",
+			"אמת את כתובת המייל",
+			"נא לאמת את המייל, על מנת שנוכל לגלות לאן הכסף נעלם"
+		);
 
 		await user.save();
 	} catch (err) {
@@ -83,7 +90,7 @@ exports.verifyEmail = async (req, res) => {
 		if (!emailToken) {
 			return res
 				.status(404)
-				.json({ message: "האימות נכשל, טוקן לא תקין" });
+				.json({ message: "האימות נכשל, נא לסנות שוב." });
 		}
 
 		const checkEmailToken = validation.addSlashes(emailToken);
@@ -145,5 +152,96 @@ exports.login = async (req, res) => {
 		return res.status(200).json(token);
 	} catch (err) {
 		return res.status(401).json({ message: err });
+	}
+};
+
+exports.forgotPassword = async (req, res) => {
+	const email = escape(req.body.email);
+	const forgotPasswordToken = crypto.randomBytes(64).toString("hex");
+
+	if (!email) {
+		return res.status(400).json({ message: "נא למלא את השדה." });
+	}
+	const checkEmail = validation.addSlashes(email);
+
+	const userEmail = await User.findOne({ email: checkEmail });
+	if (!userEmail) {
+		return res.status(400).json({ message: "משתמש לא קיים." });
+	}
+
+	const codeSlice = forgotPasswordToken.slice(0, 8).toLowerCase();
+
+	const url = `${process.env.URL_CLIENT}/user/forgot-password/${forgotPasswordToken}`;
+	sendMail(
+		checkEmail,
+		url,
+		"changePassword",
+		"איפוס סיסמא",
+		"",
+		"קוד האימות הינו",
+		codeSlice
+	);
+
+	return res.status(200).json({
+		message: "נשלח אלייך למייל קוד לאימות.",
+		code: codeSlice,
+	});
+};
+
+exports.verificationCode = async (req, res) => {
+	try {
+		const code = escape(req.body.code);
+		const currentRealCode = escape(req.body.currentRealCode.toLowerCase());
+
+		const checkCode = validation.addSlashes(code);
+
+		if (!checkCode) {
+			return res
+				.status(404)
+				.json({ message: "האימות נכשל, נא לנסות שוב." });
+		}
+
+		if (checkCode !== currentRealCode) {
+			return res.status(400).json({ message: "קוד אימות אינו תואם." });
+		}
+		return res.status(200).json({
+			message: "האימות התבצע בהצלחה.",
+		});
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
+	}
+};
+exports.changePassword = async (req, res) => {
+	const email = escape(req.body.email);
+	const password = escape(req.body.password);
+	const confrimPassword = escape(req.body.confrimPassword);
+
+	try {
+		if (!password || !confrimPassword) {
+			return res.status(400).json({ message: "נא למלא את כל השדות." });
+		}
+		if (!validation.checkPassword(password)) {
+			return res
+				.status(400)
+				.json({ message: "סיסמא צריכה להכיל מינימום 7 תווים." });
+		}
+		if (password !== confrimPassword) {
+			return res.status(400).json({ message: "הסיסמאות אינן תאומות." });
+		}
+
+		const checkEmail = validation.addSlashes(email);
+		const checkPassword = validation.addSlashes(password);
+
+		const user = await User.findOne({ email: checkEmail });
+
+		const passwordHash = await auth.hashPassword(checkPassword);
+
+		await User.findByIdAndUpdate(user._id, {
+			password: passwordHash,
+		});
+
+		return res.status(200).json({ message: "הסיסמא עודכנה בהצלחה." });
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
 	}
 };
