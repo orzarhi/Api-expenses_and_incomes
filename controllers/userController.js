@@ -65,7 +65,7 @@ exports.register = async (req, res) => {
 			checkEmail,
 			url,
 			"register",
-			"הוצאות😨 vs הכנסות💸",
+			"Buy or די",
 			"אמת את כתובת המייל",
 			"נא לאמת את המייל, על מנת שנוכל לגלות לאן הכסף נעלם"
 		);
