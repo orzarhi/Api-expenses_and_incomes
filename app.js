@@ -7,17 +7,18 @@ const userRouter = require("./routers/userRouter");
 const expenseRouter = require("./routers/expenseRouter");
 const incomeRouter = require("./routers/incomeRouter");
 const { auth } = require("./middleware/auth");
-//t
+
 const URI = process.env.URI;
 const URI_DEV = process.env.URI_DEV;
 const URL_CLIENT = process.env.URL_CLIENT;
+const URL_NETLIFY = process.env.URL_NETLIFY;
 const PORT = process.env.PORT;
 
 mongoose.set("strictQuery", true);
 const app = express();
 
 app.use(express.json());
-app.use(cors({ credentials: true, origin: URL_CLIENT }));
+app.use(cors({ credentials: true, origin: [URL_CLIENT, URL_NETLIFY] }));
 
 mongoose
 	.connect(URI)
