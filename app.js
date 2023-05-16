@@ -11,13 +11,14 @@ const { auth } = require("./middleware/auth");
 const URI = process.env.URI;
 const URI_DEV = process.env.URI_DEV;
 const URL_CLIENT = process.env.URL_CLIENT;
+
 const PORT = process.env.PORT;
 
 mongoose.set("strictQuery", true);
 const app = express();
 
 app.use(express.json());
-app.use(cors({ credentials: true, origin: URL_CLIENT }));
+app.use(cors());
 
 mongoose
 	.connect(URI)
